@@ -4,7 +4,7 @@ import yfinance as yf
 
 # 슬랙 봇 토큰과 채널 이름을 환경 변수에서 가져옴
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
-SLACK_CHANNEL = os.getenv("SLACK_CHANNEL", "#general")
+SLACK_CHANNEL = os.getenv("SLACK_CHANNEL", "#나스닥")
 
 # NASDAQ 지수 가격을 가져오는 함수
 def get_nasdaq_price(ticker="^IXIC"):
