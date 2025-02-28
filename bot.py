@@ -19,6 +19,7 @@ def send_slack_message(text):
     return response.json()
 
 def is_market_open():
+    return true
     now = datetime.now()
     if now.weekday() >= 5:  # 토요일(5)이나 일요일(6)은 시장이 열리지 않음
         return False
