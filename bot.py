@@ -9,7 +9,7 @@ SLACK_CHANNEL = os.getenv("SLACK_CHANNEL", "#나스닥")  # 채널을 #나스닥
 def get_stock_price(ticker="^IXIC"):  # 나스닥 지수의 티커는 ^IXIC
     stock = yf.Ticker(ticker)
     price = stock.history(period="1d")["Close"].iloc[-1]
-    return f"나스닥 지수 현재 가격: {price:.2f} USD"
+    return f"나스닥 지수 참고해라 ㅇㅇ: {price:.2f} "
 
 def send_slack_message(text):
     url = "https://slack.com/api/chat.postMessage"
