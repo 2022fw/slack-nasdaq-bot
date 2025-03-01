@@ -35,7 +35,6 @@ if __name__ == "__main__":
         message1 = get_stock_price("^IXIC")  # 나스닥 지수 가격 가져오기
         message2 = get_stock_price("^GSPC")  # 슨피 지수 가격 가져오기
         
-        print(message)
         result = send_slack_message(message1, '나스닥')
         send_slack_message(message2, 's&p500')
         
