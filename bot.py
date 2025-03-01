@@ -30,10 +30,11 @@ def is_market_open():
     return False
 
 if __name__ == "__main__":
-    logging.warning('hi im ralo')
-    print('ralo ralo')
     if is_market_open():
+        print('market open')
         message = get_stock_price("^IXIC")  # 나스닥 지수 가격 가져오기
-        send_slack_message(message)
+        print(message)
+        result = send_slack_message(message)
+        print(result)
     else:
         send_slack_message("미국 시장은 현재 열려 있지 않습니다.")
