@@ -31,6 +31,7 @@ def is_market_open():
 
 if __name__ == "__main__":
     logging.warning('hi im ralo')
+    print('ralo ralo')
     if is_market_open():
         message = get_stock_price("^IXIC")  # 나스닥 지수 가격 가져오기
         send_slack_message(message)
