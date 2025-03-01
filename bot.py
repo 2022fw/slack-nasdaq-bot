@@ -2,6 +2,7 @@ import os
 import requests
 import yfinance as yf
 from datetime import datetime
+import logging
 
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
 SLACK_CHANNEL = os.getenv("SLACK_CHANNEL", "#나스닥")  # 채널을 #나스닥으로 설정
@@ -29,6 +30,7 @@ def is_market_open():
     return False
 
 if __name__ == "__main__":
+    logging.warning('hi im ralo')
     if is_market_open():
         message = get_stock_price("^IXIC")  # 나스닥 지수 가격 가져오기
         send_slack_message(message)
