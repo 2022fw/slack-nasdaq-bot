@@ -7,7 +7,7 @@ import logging
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
 SLACK_CHANNEL = os.getenv("SLACK_CHANNEL", "#나스닥")  # 채널을 #나스닥으로 설정
 
-def get_stock_price(ticker="^IXIC", name):  # 나스닥 지수의 티커는 ^IXIC
+def get_stock_price(ticker="^IXIC", name="나스닥"):  # 나스닥 지수의 티커는 ^IXIC
     stock = yf.Ticker(ticker)
     price = stock.history(period="1d")["Close"].iloc[-1]
     return f"{name} 미국 경제 지수 참고하렴 *{price:.2f}*  :rocket:"
