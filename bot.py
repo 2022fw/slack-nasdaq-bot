@@ -10,7 +10,7 @@ SLACK_CHANNEL = os.getenv("SLACK_CHANNEL", "#나스닥")  # 채널을 #나스닥
 def get_stock_price(ticker="^IXIC", name="나스닥"):  # 나스닥 지수의 티커는 ^IXIC
     stock = yf.Ticker(ticker)
     price = stock.history(period="1d")["Close"].iloc[-1]
-    return f"{name} 미국 경제 지수 참고하렴 *{price:.2f}*  :rocket:"
+    return f"{name} 지수 참고하렴 *{price:.2f}*  :rocket:"
 
 def send_slack_message(text):
     url = "https://slack.com/api/chat.postMessage"
@@ -32,8 +32,8 @@ def is_market_open():
 if __name__ == "__main__":
     if is_market_open():
         print('market open')
-        message1 = get_stock_price("^IXIC", "나스닥")  # 나스닥 지수 가격 가져오기
-        message2 = get_stock_price("^GSPC", "슨피")  # 슨피 지수 가격 가져오기
+        message1 = get_stock_price("^IXIC", "NASDAQ")  # 나스닥 지수 가격 가져오기
+        message2 = get_stock_price("^GSPC", "S&P500")  # 슨피 지수 가격 가져오기
         
         result = send_slack_message(message1)
         send_slack_message(message2)
