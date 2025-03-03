@@ -20,7 +20,6 @@ def send_slack_message(text):
     return response.json()
 
 def is_market_open():
-    return True
     now = datetime.now()
     if now.weekday() >= 5:  # 토요일(5)이나 일요일(6)은 시장이 열리지 않음
         return False
@@ -33,7 +32,7 @@ if __name__ == "__main__":
     if is_market_open():
         print('market open')
         message1 = get_stock_price("^IXIC", "NASDAQ")  # 나스닥 지수 가격 가져오기
-        message2 = get_stock_price("^GSPC", "S&P500")  # 슨피 지수 가격 가져오기
+        message2 = get_stock_price("^GSPC", "S&P500   ")  # 슨피 지수 가격 가져오기
         
         result = send_slack_message(message1)
         send_slack_message(message2)
