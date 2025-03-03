@@ -20,7 +20,7 @@ def get_stock_price(ticker="^IXIC", name="나스닥"):  # 나스닥 지수의 �
     change_percent = ((current_close - prev_close) / prev_close) * 100  # 변동률 계산
     change_sign = f"+{change_percent:.2f}" if change_percent > 0 else f"{change_percent:.2f}"  # 양수일 때 + 추가
     
-    return f"{name} 지수 참고하렴 *{current_close:.2f}* ({change_sign}%)  :rocket:"
+    return f"{name} 지수 *{current_close:.2f}* ({change_sign}%)  :rocket:"
 
 def send_slack_message(text):
     url = "https://slack.com/api/chat.postMessage"
