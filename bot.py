@@ -9,8 +9,17 @@ SLACK_CHANNEL = os.getenv("SLACK_CHANNEL", "#나스닥")  # 채널을 #나스닥
 
 def get_stock_price(ticker="^IXIC", name="나스닥"):  # 나스닥 지수의 티커는 ^IXIC
     stock = yf.Ticker(ticker)
-    price = stock.history(period="1d")["Close"].iloc[-1]
-    return f"{name} 지수 참고하렴 *{price:.2f}*  :rocket:"
+    history = stock.history(period="2d")  # 2일치 데이터 가져오기
+    
+    if len(history) < 2:
+        return f"{name} 지수 데이터를 가져올 수 없습니다."
+    
+    prev_close = history["Close"].iloc[0]  # 전날 종가
+    current_close = history["Close"].iloc[1]  # 오늘 종가
+    
+    change_percent = ((current_close - prev_close) / prev_close) * 100  # 변동률 계산
+    
+    return f"{name} 지수 참고하렴 *{current_close:.2f}* ({change_percent:.2f}%)  :rocket:"
 
 def send_slack_message(text):
     url = "https://slack.com/api/chat.postMessage"
@@ -32,11 +41,11 @@ if __name__ == "__main__":
     if is_market_open():
         print('market open')
         message1 = get_stock_price("^IXIC", "NASDAQ")  # 나스닥 지수 가격 가져오기
-        message2 = get_stock_price("^GSPC", "S&P500   ")  # 슨피 지수 가격 가져오기
+        message2 = get_stock_price("^GSPC", "S&P500")  # S&P500 지수 가격 가져오기
         
         result = send_slack_message(message1)
         send_slack_message(message2)
         
         print(result)
     else:
-        send_slack_message("미국 시장은 현재 열려 있지 않습니다.")
+        send_slack_message("본장 아직 안열렸다ㅇㅇ")
