@@ -18,8 +18,9 @@ def get_stock_price(ticker="^IXIC", name="나스닥"):  # 나스닥 지수의 �
     current_close = history["Close"].iloc[1]  # 오늘 종가
     
     change_percent = ((current_close - prev_close) / prev_close) * 100  # 변동률 계산
+    change_sign = f"+{change_percent:.2f}" if change_percent > 0 else f"{change_percent:.2f}"  # 양수일 때 + 추가
     
-    return f"{name} 지수 참고하렴 *{current_close:.2f}* ({change_percent:.2f}%)  :rocket:"
+    return f"{name} 지수 참고하렴 *{current_close:.2f}* ({change_sign}%)  :rocket:"
 
 def send_slack_message(text):
     url = "https://slack.com/api/chat.postMessage"
@@ -48,4 +49,4 @@ if __name__ == "__main__":
         
         print(result)
     else:
-        send_slack_message("본장 아직 안열렸다ㅇㅇ")
+        send_slack_message("미국 시장은 현재 열려 있지 않습니다.")
