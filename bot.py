@@ -31,6 +31,15 @@ def get_stock_price(ticker="^IXIC", name="나스닥"):  # 나스닥 지수의 �
         logging.error(f"get_stock_price 오류: {e}")
         return f"{name} 지수 정보를 가져오는 중 오류 발생"
 
+def get_bitcoin_price():
+    try:
+        bitcoin = yf.Ticker("BTC-USD")
+        current_price = bitcoin.info['currentPrice']
+        return f"비트코인 가격: *{current_price}* USD"
+    except Exception as e:
+        logging.error(f"비트코인 가격 가져오기 실패: {e}")
+        return "비트코인 가격 정보를 가져올 수 없습니다."
+
 def send_slack_message(text):
     url = "https://slack.com/api/chat.postMessage"
     headers = {"Authorization": f"Bearer {SLACK_BOT_TOKEN}", "Content-Type": "application/json"}
@@ -74,11 +83,14 @@ if __name__ == "__main__":
             print('Market is open')
             message1 = get_stock_price("^IXIC", "NASDAQ")  # 나스닥 지수 가격 가져오기
             message2 = get_stock_price("^GSPC", "S&P500")  # S&P500 지수 가격 가져오기
+            message3 = get_bitcoin_price()  # 비트코인 가격 가져오기
             
             result1 = send_slack_message(message1)
             result2 = send_slack_message(message2)
+            result3 = send_slack_message(message3)
             
             logging.debug(f"Slack 메시지 1 결과: {result1}")
             logging.debug(f"Slack 메시지 2 결과: {result2}")
+            logging.debug(f"Slack 메시지 3 결과: {result3}")
     except Exception as e:
         logging.error(f"메인 실행 중 오류 발생: {e}")
