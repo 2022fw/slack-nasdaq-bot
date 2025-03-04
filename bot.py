@@ -13,6 +13,7 @@ def get_stock_price(ticker="^IXIC", name="나스닥"):  # 나스닥 지수의 �
     try:
         stock = yf.Ticker(ticker)
         history = stock.history(period="2d")  # 2일치 데이터 가져오기
+        logging.debug(f"{ticker} 데이터: {history}")
         
         if len(history) < 2:
             logging.error(f"{name} 지수 데이터가 부족합니다: {history}")
@@ -52,6 +53,8 @@ def send_slack_message(text):
 
 def is_market_open():
     now = datetime.now()
+    logging.debug(f"현재 시간: {now}, 시장 열림 여부: {now.weekday() < 5 and 9 <= now.hour < 16}")
+    
     if now.weekday() >= 5:  # 토요일(5)이나 일요일(6)은 시장이 열리지 않음
         return False
     # 미국 시장은 오전 9시 30분부터 오후 4시까지 운영됨
@@ -61,6 +64,7 @@ def is_market_open():
 
 if __name__ == "__main__":
     try:
+        logging.debug(f"시장 상태 확인: {is_market_open()}")
         if is_market_open():
             print('market open')
             message1 = get_stock_price("^IXIC", "NASDAQ")  # 나스닥 지수 가격 가져오기
@@ -69,7 +73,9 @@ if __name__ == "__main__":
             result1 = send_slack_message(message1)
             result2 = send_slack_message(message2)
             
-            logging.debug(f"Slack 응답 1: {result1}")
-            logging.debug(f"Slack 응답 2: {result2}")
+            logging.debug(f"Slack 메시지 1 결과: {result1}")
+            logging.debug(f"Slack 메시지 2 결과: {result2}")
+        else:
+            send_slack_message("미국 시장은 현재 열려 있지 않습니다.")
     except Exception as e:
         logging.error(f"메인 실행 중 오류 발생: {e}")
