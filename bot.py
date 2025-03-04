@@ -48,5 +48,3 @@ if __name__ == "__main__":
         send_slack_message(message2)
         
         print(result)
-    else:
-        send_slack_message("미국 시장은 현재 열려 있지 않습니다.")
