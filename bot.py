@@ -3,6 +3,7 @@ import requests
 import yfinance as yf
 from datetime import datetime
 import logging
+import pytz
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -52,21 +53,28 @@ def send_slack_message(text):
         return {"ok": False, "error": "Invalid JSON response"}
 
 def is_market_open():
-    now = datetime.now()
-    logging.debug(f"현재 시간: {now}, 시장 열림 여부: {now.weekday() < 5 and 9 <= now.hour < 16}")
+    nyc = pytz.timezone('America/New_York')  # 미국 동부 표준시
+    now = datetime.now(nyc)  # 현재 시간을 미국 동부 시간대로 설정
+    
+    logging.debug(f"현재 시간(미국 동부): {now}, 시장 열림 여부: {now.weekday() < 5 and 9.5 <= now.hour < 16}")
     
     if now.weekday() >= 5:  # 토요일(5)이나 일요일(6)은 시장이 열리지 않음
         return False
     # 미국 시장은 오전 9시 30분부터 오후 4시까지 운영됨
-    if now.hour >= 9 and now.hour < 16:
-        return True
-    return False
+    if now.dst() != datetime.timedelta(0):  # 서머타임 적용 여부 확인
+        market_start = now.replace(hour=8, minute=30, second=0)
+        market_end = now.replace(hour=15, minute=0, second=0)
+    else:
+        market_start = now.replace(hour=9, minute=30, second=0)
+        market_end = now.replace(hour=16, minute=0, second=0)
+    
+    return market_start <= now < market_end
 
 if __name__ == "__main__":
     try:
         logging.debug(f"시장 상태 확인: {is_market_open()}")
         if is_market_open():
-            print('market open')
+            print('Market is open')
             message1 = get_stock_price("^IXIC", "NASDAQ")  # 나스닥 지수 가격 가져오기
             message2 = get_stock_price("^GSPC", "S&P500")  # S&P500 지수 가격 가져오기
             
