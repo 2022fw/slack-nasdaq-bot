@@ -71,7 +71,5 @@ if __name__ == "__main__":
             
             logging.debug(f"Slack 응답 1: {result1}")
             logging.debug(f"Slack 응답 2: {result2}")
-        else:
-            send_slack_message("미국 시장은 현재 열려 있지 않습니다.")
     except Exception as e:
         logging.error(f"메인 실행 중 오류 발생: {e}")
