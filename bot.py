@@ -34,7 +34,7 @@ def get_stock_price(ticker="^IXIC", name="나스닥"):  # 나스닥 지수의 �
 def get_bitcoin_price():
     try:
         bitcoin = yf.Ticker("BTC-USD")
-        logging.error(f"여기 {bitcoin}")
+        logging.error(f"여기 {bitcoin.info}")
         current_price = bitcoin.info['currentPrice']
         return f"비트코인 가격: *{current_price}* USD"
     except Exception as e:
