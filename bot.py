@@ -35,6 +35,7 @@ def get_bitcoin_price():
     try:
         bitcoin = yf.Ticker("BTC-USD")
         current_price = bitcoin.info['currentPrice']
+        logging.error(f"여기 {bitcoin}")
         return f"비트코인 가격: *{current_price}* USD"
     except Exception as e:
         logging.error(f"비트코인 가격 가져오기 실패: {e}")
