@@ -91,7 +91,5 @@ if __name__ == "__main__":
             result = send_slack_message(combined_message)
             
             logging.debug(f"Slack 메시지 결과: {result}")
-        else:
-            send_slack_message("미국 시장은 현재 열려 있지 않습니다.")
     except Exception as e:
         logging.error(f"메인 실행 중 오류 발생: {e}")
