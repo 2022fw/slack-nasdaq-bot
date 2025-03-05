@@ -81,7 +81,7 @@ def get_bitcoin_price():
 if __name__ == "__main__":
     try:
         logging.debug(f"시장 상태 확인: {is_market_open()}")
-        if not is_market_open():
+        if is_market_open():
             print('market open')
             message1 = get_stock_price("^IXIC", "NASDAQ")  # 나스닥 지수 가격 가져오기
             message2 = get_stock_price("^GSPC", "S&P500")  # S&P500 지수 가격 가져오기
