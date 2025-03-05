@@ -73,7 +73,7 @@ def get_bitcoin_price():
             return "비트코인 가격 정보를 가져올 수 없습니다."
         
         current_price = history["Close"].iloc[-1]  # 최신 종가 가져오기
-        return f"₿ 비트코인 가격: *{current_price:.2f}* USD"
+        return f"비트코인 가격 *{current_price:.2f}* :bitcoin:"
     except Exception as e:
         logging.error(f"비트코인 가격 가져오기 실패: {e}")
         return "비트코인 가격 정보를 가져올 수 없습니다."
