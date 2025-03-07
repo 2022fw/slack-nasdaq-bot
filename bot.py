@@ -1,8 +1,9 @@
 import os
 import requests
 import yfinance as yf
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
+import pytz
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -52,15 +53,19 @@ def send_slack_message(text):
         return {"ok": False, "error": "Invalid JSON response"}
 
 def is_market_open():
-    now = datetime.now()
-    logging.debug(f"현재 시간: {now}, 시장 열림 여부: {now.weekday() < 5 and 9 <= now.hour < 16}")
+    nyc = pytz.timezone('America/New_York')  # 미국 동부 표준시
+    now = datetime.now(nyc)  # 현재 시간을 미국 동부 시간대로 설정
+    
+    logging.debug(f"현재 시간(미국 동부): {now}")
     
     if now.weekday() >= 5:  # 토요일(5)이나 일요일(6)은 시장이 열리지 않음
         return False
+    
     # 미국 시장은 오전 9시 30분부터 오후 4시까지 운영됨
-    if now.hour >= 9 and now.hour < 16:
-        return True
-    return False
+    if now.dst() != timedelta(0):  # 서머타임 적용 여부 확인
+        return (now.hour == 8 and now.minute >= 30) or (now.hour > 8 and now.hour < 15)
+    else:
+        return (now.hour == 9 and now.minute >= 30) or (now.hour > 9 and now.hour < 16)
 
 def get_bitcoin_price():
     try:
@@ -82,7 +87,7 @@ if __name__ == "__main__":
     try:
         logging.debug(f"시장 상태 확인: {is_market_open()}")
         if is_market_open():
-            print('market open')
+            print('Market is open')
             message1 = get_stock_price("^IXIC", "NASDAQ")  # 나스닥 지수 가격 가져오기
             message2 = get_stock_price("^GSPC", "S&P500")  # S&P500 지수 가격 가져오기
             message3 = get_bitcoin_price()  # 비트코인 가격 추가
